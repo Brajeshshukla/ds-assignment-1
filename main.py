@@ -51,7 +51,7 @@ def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
     # print('eligible canditates ', eligible_students, qualified_students)
     with open(output_file, 'a+') as of:
         of.write('---------- new course candidates ----------\n')
-        of.write('Input: %s to %s' % (str(CGPAFrom), str(CPGATo)))
+        of.write('Input: %s to %s\n' % (str(CGPAFrom), str(CPGATo)))
         of.write('Total eligible students: %d\n' % len(qualified_students))
         of.write('Qualified students:\n')
         for qualified_student in qualified_students:

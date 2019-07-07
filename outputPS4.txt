@@ -6,7 +6,8 @@ Qualified students:
 2008CSE1226 / 4.8
 
 ---------- new course candidates ----------
-Input: 3.5 to 4.0Total eligible students: 2
+Input: 3.5 to 4.0
+Total eligible students: 2
 Qualified students:
 2008CSE1223 / 3.5
 2008CSE1224 / 3.9
