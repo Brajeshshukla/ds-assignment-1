@@ -6,6 +6,7 @@ but considered it as --> courseOffer: 3.5 : 4.0
 """
 
 hash_array = None
+hash_size = 20
 input_file_name = 'inputPS4.txt'
 prompts_file_name = 'promptsPS4.txt'
 output_file = 'outputPS4.txt'
@@ -17,18 +18,32 @@ def initializeHash():
     Initialize the hash
     """
     global hash_array
-    hash_array = {}
+    hash_array = [None] * hash_size
+
+def hashId(student_id):
+    year = student_id[:4]
+    dept = student_id[4]
+    just_id=student_id[7:]
+    index = (int(year) + int(ord(dept)) + int(just_id))%hash_size
+    return index % hash_size
+    
 
 
-def insertStudentRec(StudentHashRecords, studentId, CGPA):
-    StudentHashRecords[studentId] = float(CGPA)
+def insertStudentRec(StudentHashRecords, student_id, CGPA):
+    hash_id = hashId(student_id)
+    # Using linear probing
+    if StudentHashRecords[hash_id] == None:
+        StudentHashRecords[hash_id] = (student_id,float(CGPA))
+    else:
+        while StudentHashRecords[hash_id] != None:
+            hash_id = (hash_id+1) %hash_size
+            continue
+        StudentHashRecords[hash_id] = (student_id,float(CGPA))
 
 
 def hallOfFame(StudentHashRecords, CGPA):
-    # print(StudentHashRecords)
 
-    hof_students = [data for data in StudentHashRecords.items() if data[1] >= CGPA]
-    # print('hof students', hof_students)
+    hof_students = [data for data in StudentHashRecords if data is not None and data[1] >= CGPA]
     with open(output_file, 'w+') as of:
         of.write('---------- hall of fame ----------\n')
         of.write('Input: %s\n' % str(CGPA))
@@ -42,13 +57,11 @@ def hallOfFame(StudentHashRecords, CGPA):
 
 
 def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
-    # print('current year', current_year)
-    eligible_students = [data for data in StudentHashRecords.items() \
-                         if (int(data[0][:4]) + 4) >= (current_year - 5)]
+    eligible_students = [data for data in StudentHashRecords \
+                         if data is not None and (int(data[0][:4]) + 4) >= (current_year - 5)]
 
     qualified_students = [data for data in eligible_students \
                           if (data[1] >= CGPAFrom and data[1] <= CPGATo)]
-    # print('eligible canditates ', eligible_students, qualified_students)
     with open(output_file, 'a+') as of:
         of.write('---------- new course candidates ----------\n')
         of.write('Input: %s to %s\n' % (str(CGPAFrom), str(CPGATo)))
@@ -62,15 +75,13 @@ def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
 
 
 def depAvg(StudentHashRecords):
-    print(StudentHashRecords)
     cse_count, mec_count, ece_count, arc_count = 0, 0, 0, 0
     cse_max, mec_max, ece_max, arc_max = 0, 0, 0, 0
     cse_sum, mec_sum, ece_sum, arc_sum = 0, 0, 0, 0
     cse_avg, mec_avg, ece_avg, arc_avg = 0, 0, 0, 0
-    for student_id, cgpa in StudentHashRecords.items():
-        print(student_id, cgpa)
+    temp_records = [record for record in StudentHashRecords if record is not None]
+    for student_id, cgpa in temp_records:        
         department = student_id[4:7]
-        print('deparmn ', department)
         if department == 'CSE':
             cse_count += 1
             cse_sum += cgpa
@@ -107,26 +118,20 @@ def depAvg(StudentHashRecords):
 
 def destroyHash(StudentHashRecords):
     global hash_array
-    hash_array = {}
-    
+    hash_array = {}    
 
 
 def main():
-    print('Hash before initialize ::', hash_array)
     initializeHash()
-    print('After inititalizing the array', hash_array)
-
+    
     # Insert students records
     with open(input_file_name, 'r') as input_file:
         records = input_file.readlines()
         for each_record in records:
-            # print('each_record record', each_record)
             student_id = each_record.split('/')[0].strip()  # Getting student ID
             cgpa = each_record.split('/')[1].strip()  # Getting student CGPA
-            # print(student_id, cgpa)
             insertStudentRec(hash_array, student_id, cgpa)
-            # print(hash_array)
-
+    
     with open(prompts_file_name, 'r') as input_file:
         records = input_file.readlines()
         for each_record in records:
@@ -135,19 +140,17 @@ def main():
             if header == 'hallOfFame':
                 cutoff_cgpa = each_record.split(':')[1].strip()
                 cutoff_cgpa = float(cutoff_cgpa)
-                # print('cutoff ', cutoff_cgpa, type(cutoff_cgpa))
                 hallOfFame(hash_array, cutoff_cgpa)
             # Insert Course Offer records
             elif header == 'courseOffer':
                 cgpa_ranges = each_record.split(':')[1:]
                 cgpa_from = float(cgpa_ranges[0].strip())
                 cgpa_to = float(cgpa_ranges[1].strip())
-                # print('cgpa ranges ', cgpa_from, cgpa_to)
                 newCourseList(hash_array, cgpa_from, cgpa_to)
 
     depAvg(hash_array)
     destroyHash(hash_array)
-    print('after destroy', hash_array)
+    print('Completed Operations!, Kindly visit %s for the output'%output_file)
 
 if __name__ == "__main__":
     main()

@@ -13,7 +13,7 @@ Qualified students:
 2008CSE1224 / 3.9
 
 ---------- department CGPA ----------
-CSE: max: 4.8, avg: 4.16
+CSE: max: 4.8, avg: 3.88
 MEC: max: 4.2, avg: 4.2
 ECE: max: 0, avg: 0
 ARC: max: 0, avg: 0
