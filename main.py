@@ -65,7 +65,6 @@ class HashTable:
         if self.hashTable[hash_id][0] is None:
             self.hashTable[hash_id] = (key, value)
         else:
-            self.collisionCount = self.collisionCount + 1
             while self.hashTable[hash_id][0] is not None:
                 hash_id = (hash_id + 1) % self.size
                 continue
