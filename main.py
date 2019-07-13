@@ -156,7 +156,7 @@ def hallOfFame(StudentHashRecords, CGPA):
             hof_student_id = each_hof_student[0]
             hof_cgpa = each_hof_student[1]
             of.write('%s / %s\n' % (hof_student_id, str(hof_cgpa)))
-        of.write('\n')
+        of.write('-------------------------------------\n')
 
 
 # Print the eligible students for a new course whose CGPA is between the range
@@ -182,7 +182,7 @@ def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
             qual_student_id = qualified_student[0]
             qual_cgpa = qualified_student[1]
             of.write('%s / %s\n' % (qual_student_id, str(qual_cgpa)))
-        of.write('\n')
+        of.write('-------------------------------------\n')
 
 
 # Calculate and print the average and maximum for each department
@@ -197,6 +197,7 @@ def depAvg(StudentHashRecords):
     for each_student_id in StudentHashRecords.getKeys():
         department = each_student_id[4:7]
         cgpa = StudentHashRecords.get(each_student_id)
+
         if department == 'CSE':
             cse_count += 1
             cse_sum += cgpa
@@ -229,10 +230,15 @@ def depAvg(StudentHashRecords):
     with open(output_file, 'a+') as of:
         of.write('---------- department CGPA ----------\n')
         of.write('CSE: max: %s, avg: %s\n' %
-                 (str(cse_max), str(round(cse_avg, 2))))
-        of.write('MEC: max: %s, avg: %s\n' % (str(mec_max), str(mec_avg)))
-        of.write('ECE: max: %s, avg: %s\n' % (str(ece_max), str(ece_avg)))
-        of.write('ARC: max: %s, avg: %s\n' % (str(arc_max), str(arc_avg)))
+                (str(cse_max), str(round(cse_avg, 2))))
+        of.write('MEC: max: %s, avg: %s\n' % 
+                (str(mec_max), str(round(mec_avg, 2))))
+        of.write('ECE: max: %s, avg: %s\n' % 
+                (str(ece_max), str(round(ece_avg, 2))))
+        of.write('ARC: max: %s, avg: %s\n' % 
+                (str(arc_max), str(round(arc_avg, 2))))
+        of.write('-------------------------------------\n')
+
 
 
 def main():
