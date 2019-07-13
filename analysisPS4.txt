@@ -1,0 +1,23 @@
+Operations performed and their analysis:
+
+Insertion:
+    Best case scenario : O(1)
+                         The insertion takes place in O(1) if there is no collision
+    Worst case scenario: O(n)
+                         Linear probing is used for collision management and in a worst case scenario, the whole hast table has to be probed.
+
+Retrieval:
+    Best case scenario : O(1)
+                         Retrieval will be O(1) , if there is no collision
+    Worst case scenario: O(n)
+                         Retrieval will have to probe the whole hash table in worst case and will be similar to linear search and is O(n)
+
+
+Average number of probes required for insertion or retrieval:
+
+    1/(1-alpha)
+
+    alpha = N/M = load factor
+
+    where M - is the size of hash table and N - is the number of elements currently in the hash table
+
