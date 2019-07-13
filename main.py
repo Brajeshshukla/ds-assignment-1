@@ -1,5 +1,11 @@
 # set the input files
+
+# Format for input record - "YYYYAAADDDD / CGPA"
 input_file_name = 'inputPS4.txt'
+
+# Format for hall of fame - "hallOfFame : CGPA" ex: hallOfFame : 3.5
+# Format for new course offer - "courseOffer : CGPA1 : CGPA2" 
+# ex - courseOffer : 3.5 : 4.0
 prompts_file_name = 'promptsPS4.txt'
 
 # output file to be written to
@@ -7,7 +13,10 @@ output_file = 'outputPS4.txt'
 
 # According to the problem statement, courses were offered from 2008 till 2018
 # Considering 2018 as the current year
+# For graduation at 10th anniversary, the graduated students will be till 
+# 2018 - 4 = 2014
 current_year = 2018
+
 
 """ 
 Class for the Hashtable 
@@ -16,7 +25,7 @@ The class takes care of maintenance of hashtable and hash function
 The insertion, retrieval and retrieval of keys are supported
 Hash function uses, basic arithmetic operations and uses Linear 
 probing for collisions
-Resize of the hashtable is also done when the load reaches 75%
+Resize of the hashtable is also done when the load factor reaches 75%
 
 """
 
@@ -125,9 +134,10 @@ class HashTable:
 
 
 # Initialize the hash table
-def initializeHash(StudentHashRecords):
+def initializeHash():
     # refer _init_ for the initialization code
     StudentHashRecords = HashTable(1000)
+    return StudentHashRecords
 
 
 # Insert the student_id and CGPA into the StudentHashRecords hashtable
@@ -242,8 +252,8 @@ def depAvg(StudentHashRecords):
 
 
 def main():
-    StudentHashRecords = HashTable(1000)
-    initializeHash(StudentHashRecords)
+    
+    StudentHashRecords = initializeHash()
     # insert students records
     with open(input_file_name, 'r') as input_file:
         records = input_file.readlines()
